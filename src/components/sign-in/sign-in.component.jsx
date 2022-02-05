@@ -44,8 +44,8 @@ export default class SignIn extends Component {
               )} name="Password" value={this.state.password} required  />
               <div className="buttons">
                   <CustomButton type="submit">Sign In {" "}</CustomButton>
-                  {/* <CustomButton onClick={signInWithGoogle} isGoogleSignIn  >Sign In With Google {" "}</CustomButton> */}
-                  <button className='google-sign-in custom-button' onClick={signInWithGoogle}>Google</button>
+                  {/* <CustomButton type="button" onClick={signInWithGoogle} isGoogleSignIn  >Sign In With Google {" "}</CustomButton> */}
+                  <button type="button" className='google-sign-in custom-button' onClick={signInWithGoogle}>Google</button>
            </div>
           </form>
 
