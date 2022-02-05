@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {  Routes, Route} from "react-router-dom"
+import { Routes, Route,  Navigate} from "react-router-dom"
 import './App.css';
 import Header from './components/header/header.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -41,6 +41,15 @@ class App extends React.Component {
     this.unsubscribeFromAuth()
   }
 
+  renderRightComponent = ()=> {
+    if (this.props.currentUser) {
+      return <Home />
+    }
+    else {
+      return <SignInAndSignUpPage />
+    }
+  }
+
   render() {
     return (
       <div>
@@ -48,15 +57,22 @@ class App extends React.Component {
         <Routes>
           <Route exact path="/" element={<Home  />} />
           <Route exact path="shop" element={<ShopPage />} />
-          <Route exact path="signin" element={<SignInAndSignUpPage />} />
+          <Route exact path="signin" element={this.renderRightComponent()} />
         </Routes>
       </div>
     );
   }
 }
+
+
+
+const mapStateProps = ({ user }) => ({
+  currentUser: user.currentUser
+})
+
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
 
-export default connect(null,mapDispatchToProps)(App);
+export default connect(mapStateProps,mapDispatchToProps)(App);
