@@ -10,6 +10,9 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 
 import { connect } from "react-redux"
 import {setCurrentUser} from "./redux/user/user.actions"
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from './redux/user/user.selector';
+import Checkout from './pages/checkout/checkout.component';
 
 class App extends React.Component {
 
@@ -56,8 +59,9 @@ class App extends React.Component {
         <Header  />
         <Routes>
           <Route exact path="/" element={<Home  />} />
-          <Route exact path="shop" element={<ShopPage />} />
+          <Route  path="shop" element={<ShopPage />} />
           <Route exact path="signin" element={this.renderRightComponent()} />
+          <Route exact path="checkout" element={<Checkout />} />
         </Routes>
       </div>
     );
@@ -66,8 +70,8 @@ class App extends React.Component {
 
 
 
-const mapStateProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 })
 
 const mapDispatchToProps = dispatch => ({
