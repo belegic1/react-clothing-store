@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import "./header.component.scss"
 import { ReactComponent as Logo } from "../../assets/crown.svg"
-import { ReactComponent as Shop } from "../../assets/shop.svg"
 import { auth } from '../../firebase/firebase.utils';
 
 import { connect } from 'react-redux';
@@ -17,7 +16,7 @@ const Header = ({ currentUser, hidden }) => {
 
     return <div className="header">
         <Link className='logo-container' to="/">
-            <Shop className="logo"/>
+            <Logo className="logo"/>
         </Link>
         <div className="options">
             <Link className='option' to="/shop">SHOP</Link>
