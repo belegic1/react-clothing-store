@@ -1,61 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,  } from 'react';
 
-import CollectionOverview from '../../components/collection-overview/collection-overview.component';
-import { Routes, Route, useLocation, useParams } from 'react-router-dom';
-import CollectionPage from '../collection/collection.component';
-import {
-  convertCollectionsSnapshotToMap,
-  firestore,
-} from '../../firebase/firebase.utils';
+import { useLocation, useParams } from 'react-router-dom';
+
 import { connect } from 'react-redux';
-import { updateCollections } from '../../redux/shop/shop.actions';
-import WithSpinner from '../../components/withSpinner/with-spinner.component';
+import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
+import CollectionOverviewContainer from '../../components/collection-overview/collection-overview.container';
+import CollectionPageContainer from '../collection/collection.container';
 
 
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionOverview)
-const CollectionPageWithSpinner = WithSpinner(CollectionPage)
 
-const ShopPage = ({ updateCollection }) => {
-  const [loading, setLoading] = useState(true)
+const ShopPage = ({  fetchCollectionsStartAsync}) => {
   let location = useLocation();
   const params = useParams();
-  const unsubscribeFromSnapshot = null;
+  // const unsubscribeFromSnapshot = null;
 
   useEffect(() => {
-    const collectionRef = firestore.collection('collections');
-    collectionRef.onSnapshot(async (snapshot) => {
-      const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-      updateCollection(collectionsMap);
-      setLoading(false)
-    });
+    fetchCollectionsStartAsync()
+
   }, []);
 
   if (location.pathname === '/shop' || location.pathname === '/shop/') {
-    return <CollectionsOverviewWithSpinner isLoading={loading} {...updateCollection}/>;
+    return <CollectionOverviewContainer />;
   } else {
-    return <CollectionPageWithSpinner isLoading={loading} {...updateCollection} path={params['*']} />;
+    return <CollectionPageContainer path={params['*']} />;
   }
 };
 
-// class ShopPage extends React.Component{
 
-//   unsubscribeFromSnapshot =null
-
-//   componentDidMount() {
-//     const collectionRef = firestore.collection("collections")
-//     collectionRef.onSnapshot(async snapshot => {
-//       convertCollectionsSnapshotToMap(snapshot)
-//       const collectionsMap = convertCollectionsSnapshotToMap(snapshot)
-//       this.state.updateCollection(collectionsMap)
-//     })
-//   }
-
-//   render() {
-//     return <CollectionOverview />
-//   }
-// }
 
 const mapDispatchToProps = (dispatch) => ({
-  updateCollection: (collections) => dispatch(updateCollections(collections)),
+  fetchCollectionsStartAsync: ()=> dispatch(fetchCollectionsStartAsync())
 });
+
+
 export default connect(null, mapDispatchToProps)(ShopPage);
